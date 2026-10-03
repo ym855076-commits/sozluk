@@ -89,271 +89,350 @@ footer{text-align:center;color:var(--mut);font-size:.78rem;padding:18px 12px 26p
 </div></div>
 
 <script>
-const PIN='2026'; // пароль режима учителя — поменяйте здесь
+const PIN='2026';
 const CATS={greet:{ru:'Знакомство',tk:'Tanyşlyk'},home:{ru:'Дом',tk:'Öý'},school:{ru:'Школа',tk:'Mekdep'},family:{ru:'Семья',tk:'Maşgala'},country:{ru:'Наша страна',tk:'Watanymyz'},rest:{ru:'Отдых',tk:'Dynç alyş'},mean:{ru:'Что означают жесты',tk:'Jestleriň manysy'},talk:{ru:'Разговорные жесты',tk:'Gepleşik jestleri'}};
-// img: путь к фото в папке images/, например 'images/055.jpg'. Если файла нет — показывается заглушка.
+
 const BASE=[
-{id:'k180',c:'country',n:180,ru:'Председатель',tk:'Başlyk',dru:'',dtk:'',img:'images/k180.jpg'},
-{id:'r135',c:'rest',n:135,ru:'Ночь',tk:'Gije',dru:'',dtk:'',img:'images/r135.jpg'},
-{id:'r136',c:'rest',n:136,ru:'Лето',tk:'Tomus',dru:'',dtk:'',img:'images/r136.jpg'},
-{id:'r137',c:'rest',n:137,ru:'Осень',tk:'Güýz',dru:'',dtk:'',img:'images/r137.jpg'},
-{id:'r138',c:'rest',n:138,ru:'Весна',tk:'Bahar',dru:'',dtk:'',img:'images/r138.jpg'},
-{id:'k169',c:'country',n:169,ru:'Родина',tk:'Watan',dru:'',dtk:'',img:'images/k169.jpg'},
-{id:'k170',c:'country',n:170,ru:'Государство',tk:'Döwlet',dru:'',dtk:'',img:'images/k170.jpg'},
-{id:'k171',c:'country',n:171,ru:'Москва',tk:'Moskwa',dru:'',dtk:'',img:'images/k171.jpg'},
-{id:'k173',c:'country',n:173,ru:'Революция',tk:'Rewolýusiýa',dru:'',dtk:'',img:'images/k173.jpg'},
-{id:'k174',c:'country',n:174,ru:'Партия',tk:'Partiýa',dru:'',dtk:'',img:'images/k174.jpg'},
-{id:'k176',c:'country',n:176,ru:'Борьба',tk:'Göreş',dru:'',dtk:'',img:'images/k176.jpg'},
-{id:'k177',c:'country',n:177,ru:'Конституция',tk:'Konstitusiýa',dru:'',dtk:'',img:'images/k177.jpg'},
-{id:'k178',c:'country',n:178,ru:'Выборы, выбирать',tk:'Saýlawlar, saýlamak',dru:'',dtk:'',img:'images/k178.jpg'},
-{id:'k179',c:'country',n:179,ru:'Депутат',tk:'Deputat',dru:'',dtk:'',img:'images/k179.jpg'},
-{id:'k181',c:'country',n:181,ru:'Правительство',tk:'Hökümet',dru:'',dtk:'',img:'images/k181.jpg'},
-{id:'k182',c:'country',n:182,ru:'Переводчик',tk:'Terjimeçi',dru:'',dtk:'',img:'images/k182.jpg'},
-{id:'k183',c:'country',n:183,ru:'Гласность',tk:'Aýanlyk',dru:'',dtk:'',img:'images/k183.jpg'},
-{id:'k172',c:'country',n:172,ru:'Народ',tk:'Halk',dru:'',dtk:'',img:'images/k172.jpg'},
-{id:'k175',c:'country',n:175,ru:'Президент',tk:'Prezident',dru:'',dtk:'',img:'images/k175.jpg'},
-{id:'r167',c:'rest',n:167,ru:'Чёрный',tk:'Gara',dru:'',dtk:'',img:'images/r167.jpg'},
-{id:'r168',c:'rest',n:168,ru:'Зелёный',tk:'Ýaşyl',dru:'',dtk:'',img:'images/r168.jpg'},
-{id:'g1',c:'greet',n:1,ru:'Здравствуйте',tk:'Salam',dru:'',dtk:'',img:'images/g1.jpg'},
-{id:'g2',c:'greet',n:2,ru:'До свидания',tk:'Hoş galyň',dru:'',dtk:'',img:'images/g2.jpg'},
-{id:'g3',c:'greet',n:3,ru:'Спасибо',tk:'Sag boluň',dru:'',dtk:'',img:'images/g3.jpg'},
-{id:'g4',c:'greet',n:4,ru:'Извините',tk:'Bagyşlaň',dru:'',dtk:'',img:'images/g4.jpg'},
-{id:'k184',c:'country',n:184,ru:'Демократия',tk:'Demokratiýa',dru:'',dtk:'',img:'images/k184.jpg'},
-{id:'k185',c:'country',n:185,ru:'Война',tk:'Uruş',dru:'',dtk:'',img:'images/k185.jpg'},
-{id:'k186',c:'country',n:186,ru:'Мир',tk:'Parahatçylyk',dru:'',dtk:'',img:'images/k186.jpg'},
-{id:'k187',c:'country',n:187,ru:'Армия',tk:'Goşun',dru:'',dtk:'',img:'images/k187.jpg'},
-{id:'m193',c:'mean',n:193,ru:'Жестовое имя (имя человека на жестовом языке)',tk:'Jest ady (adamyň jest dilindäki ady)',dru:'',dtk:'',img:'images/m193.jpg'},
-{id:'m195',c:'mean',n:195,ru:'Мастер своего дела',tk:'Öz işiniň ussady',dru:'',dtk:'',img:'images/m195.jpg'},
-{id:'m196',c:'mean',n:196,ru:'Мастер своего дела (вариант)',tk:'Öz işiniň ussady (wariant)',dru:'',dtk:'',img:'images/m196.jpg'},
-{id:'s97',c:'school',n:97,ru:'Читать',tk:'Okamak',dru:'',dtk:'',img:'images/s97.jpg'},
-{id:'s98',c:'school',n:98,ru:'Писать',tk:'Ýazmak',dru:'',dtk:'',img:'images/s98.jpg'},
-{id:'s99',c:'school',n:99,ru:'Считать',tk:'Sanamak',dru:'',dtk:'',img:'images/s99.jpg'},
-{id:'s100',c:'school',n:100,ru:'Рисовать',tk:'Surat çekmek',dru:'',dtk:'',img:'images/s100.jpg'},
-{id:'h59',c:'home',n:59,ru:'Уютный',tk:'Rahat',dru:'',dtk:'',img:'images/h59.jpg'},
-{id:'h60',c:'home',n:60,ru:'Новый',tk:'Täze',dru:'',dtk:'',img:'images/h60.jpg'},
-{id:'h61',c:'home',n:61,ru:'Чистый',tk:'Arassa',dru:'',dtk:'',img:'images/h61.jpg'},
-{id:'h62',c:'home',n:62,ru:'Грязный',tk:'Hapa',dru:'',dtk:'',img:'images/h62.jpg'},
-{id:'s65',c:'school',n:65,ru:'Спальня',tk:'Ýatylýan otag',dru:'',dtk:'',img:'images/s65.jpg'},
-{id:'s66',c:'school',n:66,ru:'Столовая',tk:'Naharhana',dru:'',dtk:'',img:'images/s66.jpg'},
-{id:'s69',c:'school',n:69,ru:'Воспитатель',tk:'Terbiýeçi',dru:'',dtk:'',img:'images/s69.jpg'},
-{id:'s70',c:'school',n:70,ru:'Учить',tk:'Öwretmek',dru:'',dtk:'',img:'images/s70.jpg'},
-{id:'s71',c:'school',n:71,ru:'Учиться',tk:'Öwrenmek',dru:'',dtk:'',img:'images/s71.jpg'},
-{id:'s72',c:'school',n:72,ru:'Компьютер',tk:'Kompýuter',dru:'',dtk:'',img:'images/s72.jpg'},
-{id:'s73',c:'school',n:73,ru:'Собрание',tk:'Ýygnak',dru:'',dtk:'',img:'images/s73.jpg'},
-{id:'s74',c:'school',n:74,ru:'Глухой',tk:'Kar',dru:'',dtk:'',img:'images/s74.jpg'},
-{id:'s75',c:'school',n:75,ru:'Слабослышащий',tk:'Az eşidýän',dru:'',dtk:'',img:'images/s75.jpg'},
-{id:'s76',c:'school',n:76,ru:'Дактилология',tk:'Daktilologiýa',dru:'',dtk:'',img:'images/s76.jpg'},
-{id:'s77',c:'school',n:77,ru:'Жестовая речь',tk:'Jest dili',dru:'',dtk:'',img:'images/s77.jpg'},
-{id:'s78',c:'school',n:78,ru:'Руководить',tk:'Ýolbaşçylyk etmek',dru:'',dtk:'',img:'images/s78.jpg'},
-{id:'s79',c:'school',n:79,ru:'Поручать',tk:'Tabşyrmak',dru:'',dtk:'',img:'images/s79.jpg'},
-{id:'s80',c:'school',n:80,ru:'Выполнять',tk:'Ýerine ýetirmek',dru:'',dtk:'',img:'images/s80.jpg'},
-{id:'s81',c:'school',n:81,ru:'Хвалить',tk:'Öwmek',dru:'',dtk:'',img:'images/s81.jpg'},
-{id:'s82',c:'school',n:82,ru:'Ругать',tk:'Käýemek',dru:'',dtk:'',img:'images/s82.jpg'},
-{id:'s83',c:'school',n:83,ru:'Наказывать',tk:'Jezalandyrmak',dru:'',dtk:'',img:'images/s83.jpg'},
-{id:'s84',c:'school',n:84,ru:'Проверять',tk:'Barlamak',dru:'',dtk:'',img:'images/s84.jpg'},
-{id:'s85',c:'school',n:85,ru:'Соглашаться',tk:'Razylaşmak',dru:'',dtk:'',img:'images/s85.jpg'},
-{id:'s86',c:'school',n:86,ru:'Строгий',tk:'Berk',dru:'',dtk:'',img:'images/s86.jpg'},
-{id:'s87',c:'school',n:87,ru:'Добрый',tk:'Mähriban',dru:'',dtk:'',img:'images/s87.jpg'},
-{id:'s88',c:'school',n:88,ru:'Честный',tk:'Dogruçyl',dru:'',dtk:'',img:'images/s88.jpg'},
-{id:'s89',c:'school',n:89,ru:'Урок',tk:'Sapak',dru:'',dtk:'',img:'images/s89.jpg'},
-{id:'s90',c:'school',n:90,ru:'Наушники',tk:'Gulaklyk',dru:'',dtk:'',img:'images/s90.jpg'},
-{id:'s91',c:'school',n:91,ru:'Книга',tk:'Kitap',dru:'',dtk:'',img:'images/s91.jpg'},
-{id:'s92',c:'school',n:92,ru:'Тетрадь',tk:'Depder',dru:'',dtk:'',img:'images/s92.jpg'},
-{id:'s93',c:'school',n:93,ru:'Карандаши',tk:'Galamlar',dru:'',dtk:'',img:'images/s93.jpg'},
-{id:'s94',c:'school',n:94,ru:'Рассказывать',tk:'Gürrüň bermek',dru:'',dtk:'',img:'images/s94.jpg'},
-{id:'s95',c:'school',n:95,ru:'Говорить',tk:'Gepleşmek',dru:'',dtk:'',img:'images/s95.jpg'},
-{id:'s96',c:'school',n:96,ru:'Слышать',tk:'Eşitmek',dru:'',dtk:'',img:'images/s96.jpg'},
-{id:'s105',c:'school',n:105,ru:'Повторить',tk:'Gaýtalamak',dru:'',dtk:'',img:'images/s105.jpg'},
-{id:'s106',c:'school',n:106,ru:'Помнить',tk:'Ýatda saklamak',dru:'',dtk:'',img:'images/s106.jpg'},
-{id:'s107',c:'school',n:107,ru:'Вспомнить',tk:'Ýada salmak',dru:'',dtk:'',img:'images/s107.jpg'},
-{id:'s108',c:'school',n:108,ru:'Забыть',tk:'Unutmak',dru:'',dtk:'',img:'images/s108.jpg'},
-{id:'s109',c:'school',n:109,ru:'Думать',tk:'Pikir etmek',dru:'',dtk:'',img:'images/s109.jpg'},
-{id:'s110',c:'school',n:110,ru:'Могу, можно',tk:'Bolýar, edip bilerin',dru:'',dtk:'',img:'images/s110.jpg'},
-{id:'s111',c:'school',n:111,ru:'Не могу',tk:'Edip bilmen',dru:'',dtk:'',img:'images/s111.jpg'},
-{id:'s112',c:'school',n:112,ru:'Ошибиться',tk:'Ýalňyşmak',dru:'',dtk:'',img:'images/s112.jpg'},
-{id:'s113',c:'school',n:113,ru:'Хорошо',tk:'Gowy',dru:'',dtk:'',img:'images/s113.jpg'},
-{id:'s114',c:'school',n:114,ru:'Плохо',tk:'Erbet',dru:'',dtk:'',img:'images/s114.jpg'},
-{id:'s115',c:'school',n:115,ru:'Внимательно',tk:'Üns bilen',dru:'',dtk:'',img:'images/s115.jpg'},
-{id:'s116',c:'school',n:116,ru:'Верно',tk:'Dogry',dru:'',dtk:'',img:'images/s116.jpg'},
-{id:'s117',c:'school',n:117,ru:'Стыдно',tk:'Utanmak',dru:'',dtk:'',img:'images/s117.jpg'},
-{id:'s118',c:'school',n:118,ru:'Злой, сердитый',tk:'Gaharly',dru:'',dtk:'',img:'images/s118.jpg'},
-{id:'s119',c:'school',n:119,ru:'Грубый',tk:'Gödek',dru:'',dtk:'',img:'images/s119.jpg'},
-{id:'s120',c:'school',n:120,ru:'Вежливый',tk:'Sypaýy',dru:'',dtk:'',img:'images/s120.jpg'},
-{id:'s121',c:'school',n:121,ru:'Ученик',tk:'Okuwçy',dru:'',dtk:'',img:'images/s121.jpg'},
-{id:'s122',c:'school',n:122,ru:'Старательный',tk:'Yhlasly',dru:'',dtk:'',img:'images/s122.jpg'},
-{id:'r124',c:'rest',n:124,ru:'Лес',tk:'Tokaý',dru:'',dtk:'',img:'images/r124.jpg'},
-{id:'r125',c:'rest',n:125,ru:'Река',tk:'Derýa',dru:'',dtk:'',img:'images/r125.jpg'},
-{id:'r126',c:'rest',n:126,ru:'Море',tk:'Deňiz',dru:'',dtk:'',img:'images/r126.jpg'},
-{id:'r127',c:'rest',n:127,ru:'Вода',tk:'Suw',dru:'',dtk:'',img:'images/r127.jpg'},
-{id:'r128',c:'rest',n:128,ru:'Солнце',tk:'Gün',dru:'',dtk:'',img:'images/r128.jpg'},
-{id:'r129',c:'rest',n:129,ru:'Луна',tk:'Aý',dru:'',dtk:'',img:'images/r129.jpg'},
-{id:'r130',c:'rest',n:130,ru:'Дождь',tk:'Ýagyş',dru:'',dtk:'',img:'images/r130.jpg'},
-{id:'r131',c:'rest',n:131,ru:'Снег',tk:'Gar',dru:'',dtk:'',img:'images/r131.jpg'},
-{id:'r132',c:'rest',n:132,ru:'Утро',tk:'Ertir',dru:'',dtk:'',img:'images/r132.jpg'},
-{id:'r133',c:'rest',n:133,ru:'День',tk:'Gündiz',dru:'',dtk:'',img:'images/r133.jpg'},
-{id:'r134',c:'rest',n:134,ru:'Вечер',tk:'Agşam',dru:'',dtk:'',img:'images/r134.jpg'},
-{id:'k188',c:'country',n:188,ru:'Разоружение',tk:'Ýaragsyzlanmak',dru:'',dtk:'',img:'images/k188.jpg'},
-{id:'k189',c:'country',n:189,ru:'Договор',tk:'Şertnama',dru:'',dtk:'',img:'images/k189.jpg'},
-{id:'k190',c:'country',n:190,ru:'Космос',tk:'Kosmos',dru:'',dtk:'',img:'images/k190.jpg'},
-{id:'k191',c:'country',n:191,ru:'Защищать',tk:'Gorag',dru:'',dtk:'',img:'images/k191.jpg'},
-{id:'k192',c:'country',n:192,ru:'Политика',tk:'Syýasat',dru:'',dtk:'',img:'images/k192.jpg'},
-{id:'f17',c:'family',n:17,ru:'Человек',tk:'Adam',dru:'',dtk:'',img:'images/f17.jpg'},
-{id:'f18',c:'family',n:18,ru:'Мужчина',tk:'Erkek',dru:'',dtk:'',img:'images/f18.jpg'},
-{id:'f19',c:'family',n:19,ru:'Женщина',tk:'Aýal',dru:'',dtk:'',img:'images/f19.jpg'},
-{id:'f20',c:'family',n:20,ru:'Ребёнок',tk:'Çaga',dru:'',dtk:'',img:'images/f20.jpg'},
-{id:'m197',c:'mean',n:197,ru:'Меня это не касается',tk:'Meniň işim däl',dru:'',dtk:'',img:'images/m197.jpg'},
-{id:'m198',c:'mean',n:198,ru:'Ошибаться',tk:'Ýalňyşmak',dru:'',dtk:'',img:'images/m198.jpg'},
-{id:'m199',c:'mean',n:199,ru:'Не застать (дома, на работе)',tk:'Tapman galmak (öýde, işde)',dru:'',dtk:'',img:'images/m199.jpg'},
-{id:'m200',c:'mean',n:200,ru:'Потрясающее, сногсшибательное',tk:'Geň galdyryjy',dru:'',dtk:'',img:'images/m200.jpg'},
-{id:'t201',c:'talk',n:201,ru:'Одинаково, идентично',tk:'Birmeňzeş',dru:'',dtk:'',img:'images/t201.jpg'},
-{id:'t202',c:'talk',n:202,ru:'Успокоиться после волнений',tk:'Aladalardan soň köşeşmek',dru:'',dtk:'',img:'images/t202.jpg'},
-{id:'t203',c:'talk',n:203,ru:'Выбиться из сил',tk:'Ysgyndan gaçmak',dru:'',dtk:'',img:'images/t203.jpg'},
-{id:'t204',c:'talk',n:204,ru:'Вот оно что',tk:'Ine, nämekä',dru:'',dtk:'',img:'images/t204.jpg'},
-{id:'t205',c:'talk',n:205,ru:'Упустить из виду, забыть',tk:'Ünsden düşürmek, ýatdan çykarmak',dru:'',dtk:'',img:'images/t205.jpg'},
-{id:'t206',c:'talk',n:206,ru:'На сердце «кошки скребут»',tk:'Ýüregi gysýar',dru:'',dtk:'',img:'images/t206.jpg'},
-{id:'t207',c:'talk',n:207,ru:'Не бояться сказать в глаза',tk:'Ýüzüne aýtmakdan gorkmazlyk',dru:'',dtk:'',img:'images/t207.jpg'},
-{id:'t208',c:'talk',n:208,ru:'Подожди немного',tk:'Biraz garaş',dru:'',dtk:'',img:'images/t208.jpg'},
-{id:'g5',c:'greet',n:5,ru:'Имя',tk:'Ady',dru:'',dtk:'',img:'images/g5.jpg'},
-{id:'g6',c:'greet',n:6,ru:'Профессия',tk:'Käsip',dru:'',dtk:'',img:'images/g6.jpg'},
-{id:'g7',c:'greet',n:7,ru:'Специальность',tk:'Hünär',dru:'',dtk:'',img:'images/g7.jpg'},
-{id:'g8',c:'greet',n:8,ru:'Кто',tk:'Kim',dru:'',dtk:'',img:'images/g8.jpg'},
-{id:'g9',c:'greet',n:9,ru:'Что',tk:'Näme',dru:'',dtk:'',img:'images/g9.jpg'},
-{id:'g10',c:'greet',n:10,ru:'Где',tk:'Nirede',dru:'',dtk:'',img:'images/g10.jpg'},
-{id:'g11',c:'greet',n:11,ru:'Когда',tk:'Haçan',dru:'',dtk:'',img:'images/g11.jpg'},
-{id:'g12',c:'greet',n:12,ru:'Куда',tk:'Nirä',dru:'',dtk:'',img:'images/g12.jpg'},
-{id:'g13',c:'greet',n:13,ru:'Откуда',tk:'Nireden',dru:'',dtk:'',img:'images/g13.jpg'},
-{id:'g14',c:'greet',n:14,ru:'Зачем',tk:'Näme üçin',dru:'',dtk:'',img:'images/g14.jpg'},
-{id:'g15',c:'greet',n:15,ru:'Почему',tk:'Näme sebäpli',dru:'',dtk:'',img:'images/g15.jpg'},
-{id:'g16',c:'greet',n:16,ru:'Чей',tk:'Kimiň',dru:'',dtk:'',img:'images/g16.jpg'},
-{id:'f23',c:'family',n:23,ru:'Мать',tk:'Eje',dru:'',dtk:'',img:'images/f23.jpg'},
-{id:'f24',c:'family',n:24,ru:'Сын',tk:'Ogul',dru:'',dtk:'',img:'images/f24.jpg'},
-{id:'f25',c:'family',n:25,ru:'Дочь',tk:'Gyz',dru:'',dtk:'',img:'images/f25.jpg'},
-{id:'f26',c:'family',n:26,ru:'Бабушка',tk:'Mama',dru:'',dtk:'',img:'images/f26.jpg'},
-{id:'f27',c:'family',n:27,ru:'Дедушка',tk:'Baba',dru:'',dtk:'',img:'images/f27.jpg'},
-{id:'f28',c:'family',n:28,ru:'Брат',tk:'Dogan',dru:'',dtk:'',img:'images/f28.jpg'},
-{id:'f29',c:'family',n:29,ru:'Сестра',tk:'Uýa',dru:'',dtk:'',img:'images/f29.jpg'},
-{id:'f30',c:'family',n:30,ru:'Жить',tk:'Ýaşamak',dru:'',dtk:'',img:'images/f30.jpg'},
-{id:'f31',c:'family',n:31,ru:'Работать',tk:'Işlemek',dru:'',dtk:'',img:'images/f31.jpg'},
-{id:'f32',c:'family',n:32,ru:'Уважать',tk:'Hormat goýmak',dru:'',dtk:'',img:'images/f32.jpg'},
-{id:'f37',c:'family',n:37,ru:'Молодой',tk:'Ýaş',dru:'',dtk:'',img:'images/f37.jpg'},
-{id:'f38',c:'family',n:38,ru:'Старый',tk:'Garry',dru:'',dtk:'',img:'images/f38.jpg'},
-{id:'h51',c:'home',n:51,ru:'Кровать',tk:'Krowat',dru:'',dtk:'',img:'images/h51.jpg'},
-{id:'h52',c:'home',n:52,ru:'Телевизор',tk:'Telewizor',dru:'',dtk:'',img:'images/h52.jpg'},
-{id:'h53',c:'home',n:53,ru:'Видеомагнитофон',tk:'Wideomagnitofon',dru:'',dtk:'',img:'images/h53.jpg'},
-{id:'h54',c:'home',n:54,ru:'Делать',tk:'Etmek',dru:'',dtk:'',img:'images/h54.jpg'},
-{id:'h55',c:'home',n:55,ru:'Смотреть',tk:'Görmek',dru:'Движение взгляда и наблюдения.',dtk:'Görmek, synlamak hereketi.',img:'images/h55.jpg'},
-{id:'h56',c:'home',n:56,ru:'Мыться',tk:'Ýuwunmak',dru:'Процесс мытья и умывания.',dtk:'Arassalanmak, ýuwunmak.',img:'images/h56.jpg'},
-{id:'h57',c:'home',n:57,ru:'Приглашать',tk:'Çagyrmak',dru:'Жест приглашения в гости.',dtk:'Myhman almak, çagyrmak.',img:'images/h57.jpg'},
-{id:'h58',c:'home',n:58,ru:'Светлый',tk:'Ýagty',dru:'Обозначение светлого пространства.',dtk:'Ýagty, nurly ýer.',img:'images/h58.jpg'},
-{id:'s63',c:'school',n:63,ru:'Школа',tk:'Mekdep',dru:'Жест, обозначающий школу и учёбу.',dtk:'Mekdep binasyny we okuwy aňladýan jest.',img:'images/s63.jpg'},
-{id:'s64',c:'school',n:64,ru:'Класс',tk:'Synp',dru:'Обозначение учебного класса.',dtk:'Synp otagyny görkezýän jest.',img:'images/s64.jpg'},
-{id:'s67',c:'school',n:67,ru:'Директор',tk:'Direktor',dru:'Жест руководителя школы.',dtk:'Ýolbaşçyny aňladýan ýörite jest.',img:'images/s67.jpg'},
-{id:'s68',c:'school',n:68,ru:'Учитель',tk:'Mugallym',dru:'Обозначение преподавателя.',dtk:'Bilim berýän adamy görkezmek.',img:'images/s68.jpg'},
-{id:'f21',c:'family',n:21,ru:'Семья',tk:'Maşgala',dru:'Круговое движение рук на уровне живота.',dtk:'Garnyň töwereginde elleriň aýlawly hereketi.',img:'images/f21.jpg'},
-{id:'f22',c:'family',n:22,ru:'Отец',tk:'Kaka / Ata',dru:'Движение ладони у лба и подбородка.',dtk:'Maňlaýda we eňekde el aýasynyň hereketi.',img:'images/f22.jpg'},
-{id:'r123',c:'rest',n:123,ru:'Отдых',tk:'Dynç alyş',dru:'Состояние отдыха и расслабления.',dtk:'Dynç almagy we boş wagty aňlatmak.',img:'images/r123.jpg'}
+{id:'k180',c:'country',n:180,ru:'Председатель',tk:'Başlyk',dru:'',dtk:'',img:'k180.jpg'},
+{id:'r135',c:'rest',n:135,ru:'Ночь',tk:'Gije',dru:'',dtk:'',img:'r135.jpg'},
+{id:'r136',c:'rest',n:136,ru:'Лето',tk:'Tomus',dru:'',dtk:'',img:'r136.jpg'},
+{id:'r137',c:'rest',n:137,ru:'Осень',tk:'Güýz',dru:'',dtk:'',img:'r137.jpg'},
+{id:'r138',c:'rest',n:138,ru:'Весна',tk:'Bahar',dru:'',dtk:'',img:'r138.jpg'},
+{id:'k169',c:'country',n:169,ru:'Родина',tk:'Watan',dru:'',dtk:'',img:'k169.jpg'},
+{id:'k170',c:'country',n:170,ru:'Государство',tk:'Döwlet',dru:'',dtk:'',img:'k170.jpg'},
+{id:'k171',c:'country',n:171,ru:'Москва',tk:'Moskwa',dru:'',dtk:'',img:'k171.jpg'},
+{id:'k173',c:'country',n:173,ru:'Революция',tk:'Rewolýusiýa',dru:'',dtk:'',img:'k173.jpg'},
+{id:'k174',c:'country',n:174,ru:'Партия',tk:'Partiýa',dru:'',dtk:'',img:'k174.jpg'},
+{id:'k176',c:'country',n:176,ru:'Борьба',tk:'Göreş',dru:'',dtk:'',img:'k176.jpg'},
+{id:'k177',c:'country',n:177,ru:'Конституция',tk:'Konstitusiýa',dru:'',dtk:'',img:'k177.jpg'},
+{id:'k178',c:'country',n:178,ru:'Выборы, выбирать',tk:'Saýlawlar, saýlamak',dru:'',dtk:'',img:'k178.jpg'},
+{id:'k179',c:'country',n:179,ru:'Депутат',tk:'Deputat',dru:'',dtk:'',img:'k179.jpg'},
+{id:'k181',c:'country',n:181,ru:'Правительство',tk:'Hökümet',dru:'',dtk:'',img:'k181.jpg'},
+{id:'k182',c:'country',n:182,ru:'Переводчик',tk:'Terjimeçi',dru:'',dtk:'',img:'k182.jpg'},
+{id:'k183',c:'country',n:183,ru:'Гласность',tk:'Aýanlyk',dru:'',dtk:'',img:'k183.jpg'},
+{id:'k172',c:'country',n:172,ru:'Народ',tk:'Halk',dru:'',dtk:'',img:'k172.jpg'},
+{id:'k175',c:'country',n:175,ru:'Президент',tk:'Prezident',dru:'',dtk:'',img:'k175.jpg'},
+{id:'r167',c:'rest',n:167,ru:'Чёрный',tk:'Gara',dru:'',dtk:'',img:'r167.jpg'},
+{id:'r168',c:'rest',n:168,ru:'Зелёный',tk:'Ýaşyl',dru:'',dtk:'',img:'r168.jpg'},
+{id:'g1',c:'greet',n:1,ru:'Здравствуйте',tk:'Salam',dru:'',dtk:'',img:'g1.jpg'},
+{id:'g2',c:'greet',n:2,ru:'До свидания',tk:'Hoş galyň',dru:'',dtk:'',img:'g2.jpg'},
+{id:'g3',c:'greet',n:3,ru:'Спасибо',tk:'Sag boluň',dru:'',dtk:'',img:'g3.jpg'},
+{id:'g4',c:'greet',n:4,ru:'Извините',tk:'Bagyşlaň',dru:'',dtk:'',img:'g4.jpg'},
+{id:'k184',c:'country',n:184,ru:'Демократия',tk:'Demokratiýa',dru:'',dtk:'',img:'k184.jpg'},
+{id:'k185',c:'country',n:185,ru:'Война',tk:'Uruş',dru:'',dtk:'',img:'k185.jpg'},
+{id:'k186',c:'country',n:186,ru:'Мир',tk:'Parahatçylyk',dru:'',dtk:'',img:'k186.jpg'},
+{id:'k187',c:'country',n:187,ru:'Армия',tk:'Goşun',dru:'',dtk:'',img:'k187.jpg'},
+{id:'m193',c:'mean',n:193,ru:'Жестовое имя (имя человека на жестовом языке)',tk:'Jest ady (adamyň jest dilindäki ady)',dru:'',dtk:'',img:'m193.jpg'},
+{id:'m195',c:'mean',n:195,ru:'Мастер своего дела',tk:'Öz işiniň ussady',dru:'',dtk:'',img:'m195.jpg'},
+{id:'m196',c:'mean',n:196,ru:'Мастер своего дела (вариант)',tk:'Öz işiniň ussady (wariant)',dru:'',dtk:'',img:'m196.jpg'},
+{id:'s97',c:'school',n:97,ru:'Читать',tk:'Okamak',dru:'',dtk:'',img:'s97.jpg'},
+{id:'s98',c:'school',n:98,ru:'Писать',tk:'Ýazmak',dru:'',dtk:'',img:'s98.jpg'},
+{id:'s99',c:'school',n:99,ru:'Считать',tk:'Sanamak',dru:'',dtk:'',img:'s99.jpg'},
+{id:'s100',c:'school',n:100,ru:'Рисовать',tk:'Surat çekmek',dru:'',dtk:'',img:'s100.jpg'},
+{id:'h59',c:'home',n:59,ru:'Уютный',tk:'Rahat',dru:'',dtk:'',img:'h59.jpg'},
+{id:'h60',c:'home',n:60,ru:'Новый',tk:'Täze',dru:'',dtk:'',img:'h60.jpg'},
+{id:'h61',c:'home',n:61,ru:'Чистый',tk:'Arassa',dru:'',dtk:'',img:'h61.jpg'},
+{id:'h62',c:'home',n:62,ru:'Грязный',tk:'Hapa',dru:'',dtk:'',img:'h62.jpg'},
+{id:'s65',c:'school',n:65,ru:'Спальня',tk:'Ýatylýan otag',dru:'',dtk:'',img:'s65.jpg'},
+{id:'s66',c:'school',n:66,ru:'Столовая',tk:'Naharhana',dru:'',dtk:'',img:'s66.jpg'},
+{id:'s69',c:'school',n:69,ru:'Воспитатель',tk:'Terbiýeçi',dru:'',dtk:'',img:'s69.jpg'},
+{id:'s70',c:'school',n:70,ru:'Учить',tk:'Öwretmek',dru:'',dtk:'',img:'s70.jpg'},
+{id:'s71',c:'school',n:71,ru:'Учиться',tk:'Öwrenmek',dru:'',dtk:'',img:'s71.jpg'},
+{id:'s72',c:'school',n:72,ru:'Компьютер',tk:'Kompýuter',dru:'',dtk:'',img:'s72.jpg'},
+{id:'s73',c:'school',n:73,ru:'Собрание',tk:'Ýygnak',dru:'',dtk:'',img:'s73.jpg'},
+{id:'s74',c:'school',n:74,ru:'Глухой',tk:'Kar',dru:'',dtk:'',img:'s74.jpg'},
+{id:'s75',c:'school',n:75,ru:'Слабослышащий',tk:'Az eşidýän',dru:'',dtk:'',img:'s75.jpg'},
+{id:'s76',c:'school',n:76,ru:'Дактилология',tk:'Daktilologiýa',dru:'',dtk:'',img:'s76.jpg'},
+{id:'s77',c:'school',n:77,ru:'Жестовая речь',tk:'Jest dili',dru:'',dtk:'',img:'s77.jpg'},
+{id:'s78',c:'school',n:78,ru:'Руководить',tk:'Ýolbaşçylyk etmek',dru:'',dtk:'',img:'s78.jpg'},
+{id:'s79',c:'school',n:79,ru:'Поручать',tk:'Tabşyrmak',dru:'',dtk:'',img:'s79.jpg'},
+{id:'s80',c:'school',n:80,ru:'Выполнять',tk:'Ýerine ýetirmek',dru:'',dtk:'',img:'s80.jpg'},
+{id:'s81',c:'school',n:81,ru:'Хвалить',tk:'Öwmek',dru:'',dtk:'',img:'s81.jpg'},
+{id:'s82',c:'school',n:82,ru:'Ругать',tk:'Käýemek',dru:'',dtk:'',img:'s82.jpg'},
+{id:'s83',c:'school',n:83,ru:'Наказывать',tk:'Jezalandyrmak',dru:'',dtk:'',img:'s83.jpg'},
+{id:'s84',c:'school',n:84,ru:'Проверять',tk:'Barlamak',dru:'',dtk:'',img:'s84.jpg'},
+{id:'s85',c:'school',n:85,ru:'Соглашаться',tk:'Razylaşmak',dru:'',dtk:'',img:'s85.jpg'},
+{id:'s86',c:'school',n:86,ru:'Строгий',tk:'Berk',dru:'',dtk:'',img:'s86.jpg'},
+{id:'s87',c:'school',n:87,ru:'Добрый',tk:'Mähriban',dru:'',dtk:'',img:'s87.jpg'},
+{id:'s88',c:'school',n:88,ru:'Честный',tk:'Dogruçyl',dru:'',dtk:'',img:'s88.jpg'},
+{id:'s89',c:'school',n:89,ru:'Урок',tk:'Sapak',dru:'',dtk:'',img:'s89.jpg'},
+{id:'s90',c:'school',n:90,ru:'Наушники',tk:'Gulaklyk',dru:'',dtk:'',img:'s90.jpg'},
+{id:'s91',c:'school',n:91,ru:'Книга',tk:'Kitap',dru:'',dtk:'',img:'s91.jpg'},
+{id:'s92',c:'school',n:92,ru:'Тетрадь',tk:'Depder',dru:'',dtk:'',img:'s92.jpg'},
+{id:'s93',c:'school',n:93,ru:'Карандаши',tk:'Galamlar',dru:'',dtk:'',img:'s93.jpg'},
+{id:'s94',c:'school',n:94,ru:'Рассказывать',tk:'Gürrüň bermek',dru:'',dtk:'',img:'s94.jpg'},
+{id:'s95',c:'school',n:95,ru:'Говорить',tk:'Gepleşmek',dru:'',dtk:'',img:'s95.jpg'},
+{id:'s96',c:'school',n:96,ru:'Слышать',tk:'Eşitmek',dru:'',dtk:'',img:'s96.jpg'},
+{id:'s105',c:'school',n:105,ru:'Повторить',tk:'Gaýtalamak',dru:'',dtk:'',img:'s105.jpg'},
+{id:'s106',c:'school',n:106,ru:'Помнить',tk:'Ýatda saklamak',dru:'',dtk:'',img:'s106.jpg'},
+{id:'s107',c:'school',n:107,ru:'Вспомнить',tk:'Ýada salmak',dru:'',dtk:'',img:'s107.jpg'},
+{id:'s108',c:'school',n:108,ru:'Забыть',tk:'Unutmak',dru:'',dtk:'',img:'s108.jpg'},
+{id:'s109',c:'school',n:109,ru:'Думать',tk:'Pikir etmek',dru:'',dtk:'',img:'s109.jpg'},
+{id:'s110',c:'school',n:110,ru:'Могу, можно',tk:'Bolýar, edip bilerin',dru:'',dtk:'',img:'s110.jpg'},
+{id:'s111',c:'school',n:111,ru:'Не могу',tk:'Edip bilmen',dru:'',dtk:'',img:'s111.jpg'},
+{id:'s112',c:'school',n:112,ru:'Ошибиться',tk:'Ýalňyşmak',dru:'',dtk:'',img:'s112.jpg'},
+{id:'s113',c:'school',n:113,ru:'Хорошо',tk:'Gowy',dru:'',dtk:'',img:'s113.jpg'},
+{id:'s114',c:'school',n:114,ru:'Плохо',tk:'Erbet',dru:'',dtk:'',img:'s114.jpg'},
+{id:'s115',c:'school',n:115,ru:'Внимательно',tk:'Üns bilen',dru:'',dtk:'',img:'s115.jpg'},
+{id:'s116',c:'school',n:116,ru:'Верно',tk:'Dogry',dru:'',dtk:'',img:'s116.jpg'},
+{id:'s117',c:'school',n:117,ru:'Стыдно',tk:'Utanmak',dru:'',dtk:'',img:'s117.jpg'},
+{id:'s118',c:'school',n:118,ru:'Злой, сердитый',tk:'Gaharly',dru:'',dtk:'',img:'s118.jpg'},
+{id:'s119',c:'school',n:119,ru:'Грубый',tk:'Gödek',dru:'',dtk:'',img:'s119.jpg'},
+{id:'s120',c:'school',n:120,ru:'Вежливый',tk:'Sypaýy',dru:'',dtk:'',img:'s120.jpg'},
+{id:'s121',c:'school',n:121,ru:'Ученик',tk:'Okuwçy',dru:'',dtk:'',img:'s121.jpg'},
+{id:'s122',c:'school',n:122,ru:'Старательный',tk:'Yhlasly',dru:'',dtk:'',img:'s122.jpg'},
+{id:'r124',c:'rest',n:124,ru:'Лес',tk:'Tokaý',dru:'',dtk:'',img:'r124.jpg'},
+{id:'r125',c:'rest',n:125,ru:'Река',tk:'Derýa',dru:'',dtk:'',img:'r125.jpg'},
+{id:'r126',c:'rest',n:126,ru:'Море',tk:'Deňiz',dru:'',dtk:'',img:'r126.jpg'},
+{id:'r127',c:'rest',n:127,ru:'Вода',tk:'Suw',dru:'',dtk:'',img:'r127.jpg'},
+{id:'r128',c:'rest',n:128,ru:'Солнце',tk:'Gün',dru:'',dtk:'',img:'r128.jpg'},
+{id:'r129',c:'rest',n:129,ru:'Луна',tk:'Aý',dru:'',dtk:'',img:'r129.jpg'},
+{id:'r130',c:'rest',n:130,ru:'Дождь',tk:'Ýagyş',dru:'',dtk:'',img:'r130.jpg'},
+{id:'r131',c:'rest',n:131,ru:'Снег',tk:'Gar',dru:'',dtk:'',img:'r131.jpg'},
+{id:'r132',c:'rest',n:132,ru:'Утро',tk:'Ertir',dru:'',dtk:'',img:'r132.jpg'},
+{id:'r133',c:'rest',n:133,ru:'День',tk:'Gündiz',dru:'',dtk:'',img:'r133.jpg'},
+{id:'r134',c:'rest',n:134,ru:'Вечер',tk:'Agşam',dru:'',dtk:'',img:'r134.jpg'},
+{id:'k188',c:'country',n:188,ru:'Разоружение',tk:'Ýaragsyzlanmak',dru:'',dtk:'',img:'k188.jpg'},
+{id:'k189',c:'country',n:189,ru:'Договор',tk:'Şertnama',dru:'',dtk:'',img:'k189.jpg'},
+{id:'k190',c:'country',n:190,ru:'Космос',tk:'Kosmos',dru:'',dtk:'',img:'k190.jpg'},
+{id:'k191',c:'country',n:191,ru:'Защищать',tk:'Gorag',dru:'',dtk:'',img:'k191.jpg'},
+{id:'k192',c:'country',n:192,ru:'Политика',tk:'Syýasat',dru:'',dtk:'',img:'k192.jpg'},
+{id:'f17',c:'family',n:17,ru:'Человек',tk:'Adam',dru:'',dtk:'',img:'f17.jpg'},
+{id:'f18',c:'family',n:18,ru:'Мужчина',tk:'Erkek',dru:'',dtk:'',img:'f18.jpg'},
+{id:'f19',c:'family',n:19,ru:'Женщина',tk:'Aýal',dru:'',dtk:'',img:'f19.jpg'},
+{id:'f20',c:'family',n:20,ru:'Ребёнок',tk:'Çaga',dru:'',dtk:'',img:'f20.jpg'},
+{id:'m197',c:'mean',n:197,ru:'Меня это не касается',tk:'Meniň işim däl',dru:'',dtk:'',img:'m197.jpg'},
+{id:'m198',c:'mean',n:198,ru:'Ошибаться',tk:'Ýalňyşmak',dru:'',dtk:'',img:'m198.jpg'},
+{id:'m199',c:'mean',n:199,ru:'Не застать (дома, на работе)',tk:'Tapman galmak (öýde, işde)',dru:'',dtk:'',img:'m199.jpg'},
+{id:'m200',c:'mean',n:200,ru:'Потрясающее, сногсшибательное',tk:'Geň galdyryjy',dru:'',dtk:'',img:'m200.jpg'},
+{id:'t201',c:'talk',n:201,ru:'Одинаково, идентично',tk:'Birmeňzeş',dru:'',dtk:'',img:'t201.jpg'},
+{id:'t202',c:'talk',n:202,ru:'Успокоиться после волнений',tk:'Aladalardan soň köşeşmek',dru:'',dtk:'',img:'t202.jpg'},
+{id:'t203',c:'talk',n:203,ru:'Выбиться из сил',tk:'Ysgyndan gaçmak',dru:'',dtk:'',img:'t203.jpg'},
+{id:'t204',c:'talk',n:204,ru:'Вот оно что',tk:'Ine, nämekä',dru:'',dtk:'',img:'t204.jpg'},
+{id:'t205',c:'talk',n:205,ru:'Упустить из виду, забыть',tk:'Ünsden düşürmek, ýatdan çykarmak',dru:'',dtk:'',img:'t205.jpg'},
+{id:'t206',c:'talk',n:206,ru:'На сердце «кошки скребут»',tk:'Ýüregi gysýar',dru:'',dtk:'',img:'t206.jpg'},
+{id:'t207',c:'talk',n:207,ru:'Не бояться сказать в глаза',tk:'Ýüzüne aýtmakdan gorkmazlyk',dru:'',dtk:'',img:'t207.jpg'},
+{id:'t208',c:'talk',n:208,ru:'Подожди немного',tk:'Biraz garaş',dru:'',dtk:'',img:'t208.jpg'},
+{id:'g5',c:'greet',n:5,ru:'Имя',tk:'Ady',dru:'',dtk:'',img:'g5.jpg'},
+{id:'g6',c:'greet',n:6,ru:'Профессия',tk:'Käsip',dru:'',dtk:'',img:'g6.jpg'},
+{id:'g7',c:'greet',n:7,ru:'Специальность',tk:'Hünär',dru:'',dtk:'',img:'g7.jpg'},
+{id:'g8',c:'greet',n:8,ru:'Кто',tk:'Kim',dru:'',dtk:'',img:'g8.jpg'},
+{id:'g9',c:'greet',n:9,ru:'Что',tk:'Näme',dru:'',dtk:'',img:'g9.jpg'},
+{id:'g10',c:'greet',n:10,ru:'Где',tk:'Nirede',dru:'',dtk:'',img:'g10.jpg'},
+{id:'g11',c:'greet',n:11,ru:'Когда',tk:'Haçan',dru:'',dtk:'',img:'g11.jpg'},
+{id:'g12',c:'greet',n:12,ru:'Куда',tk:'Nirä',dru:'',dtk:'',img:'g12.jpg'},
+{id:'g13',c:'greet',n:13,ru:'Откуда',tk:'Nireden',dru:'',dtk:'',img:'g13.jpg'},
+{id:'g14',c:'greet',n:14,ru:'Зачем',tk:'Näme üçin',dru:'',dtk:'',img:'g14.jpg'},
+{id:'g15',c:'greet',n:15,ru:'Почему',tk:'Näme sebäpli',dru:'',dtk:'',img:'g15.jpg'},
+{id:'g16',c:'greet',n:16,ru:'Чей',tk:'Kimiň',dru:'',dtk:'',img:'g16.jpg'},
+{id:'f23',c:'family',n:23,ru:'Мать',tk:'Eje',dru:'',dtk:'',img:'f23.jpg'},
+{id:'f24',c:'family',n:24,ru:'Сын',tk:'Ogul',dru:'',dtk:'',img:'f24.jpg'},
+{id:'f25',c:'family',n:25,ru:'Дочь',tk:'Gyz',dru:'',dtk:'',img:'f25.jpg'},
+{id:'f26',c:'family',n:26,ru:'Бабушка',tk:'Mama',dru:'',dtk:'',img:'f26.jpg'},
+{id:'f27',c:'family',n:27,ru:'Дедушка',tk:'Baba',dru:'',dtk:'',img:'f27.jpg'},
+{id:'f28',c:'family',n:28,ru:'Брат',tk:'Dogan',dru:'',dtk:'',img:'f28.jpg'},
+{id:'f29',c:'family',n:29,ru:'Сестра',tk:'Uýa',dru:'',dtk:'',img:'f29.jpg'},
+{id:'f30',c:'family',n:30,ru:'Жить',tk:'Ýaşamak',dru:'',dtk:'',img:'f30.jpg'},
+{id:'f31',c:'family',n:31,ru:'Работать',tk:'Işlemek',dru:'',dtk:'',img:'f31.jpg'},
+{id:'f32',c:'family',n:32,ru:'Уважать',tk:'Hormat goýmak',dru:'',dtk:'',img:'f32.jpg'},
+{id:'f37',c:'family',n:37,ru:'Молодой',tk:'Ýaş',dru:'',dtk:'',img:'f37.jpg'},
+{id:'f38',c:'family',n:38,ru:'Старый',tk:'Garry',dru:'',dtk:'',img:'f38.jpg'},
+{id:'h51',c:'home',n:51,ru:'Кровать',tk:'Krowat',dru:'',dtk:'',img:'h51.jpg'},
+{id:'h52',c:'home',n:52,ru:'Телевизор',tk:'Telewizor',dru:'',dtk:'',img:'h52.jpg'}
 ];
-const T={
-ru:{h:'Словарь жестов',s:'Лебапская специальная школа-интернат №5',search:'🔍 Поиск жеста',dict:'📖 Словарь',quiz:'🎯 Тест',all:'Все',learned:'Выучено',learn:'Выучил',again:'✓ Выучено',prog:(a,b)=>`Выучено: ${a} из ${b}`,none:'Ничего не найдено',add:'➕ Добавить жест',aH:'Новый жест',aC:'Раздел',aN:'Название',aD:'Описание',save:'Сохранить',cancel:'Отмена',pin:'Пароль учителя:',bad:'Неверный пароль',del:'Удалить этот жест?',q:'Что это за жест?',qd:'Какой жест описан?',next:'Дальше',res:(a,b)=>`Результат: ${a} из ${b}`,again2:'Пройти ещё раз',nophoto:'Нет фото',teacher:'👨‍🏫 Учитель',exit:'🔓 Выйти',foot:'Воспитатель: Мурзаев Юсуп',need:'Для теста нужно минимум 4 жеста',night:'🌙 Ночь',day:'☀️ День'},
-tk:{h:'Jestler sözlügi',s:'Lebap welaýat 5-nji ýöriteleşdirilen mekdep-internaty',search:'🔍 Jest gözle',dict:'📖 Sözlük',quiz:'🎯 Synag',all:'Hemmesi',learned:'Öwrenildi',learn:'Öwrendim',again:'✓ Öwrenildi',prog:(a,b)=>`Öwrenildi: ${a} / ${b}`,none:'Hiç zat tapylmady',add:'➕ Jest goş',aH:'Täze jest',aC:'Bölüm',aN:'Ady',aD:'Düşündiriş',save:'Ýatda sakla',cancel:'Bes et',pin:'Mugallymyň paroly:',bad:'Parol nädogry',del:'Bu jesti pozmalymy?',q:'Bu haýsy jest?',qd:'Haýsy jest beýan edilen?',next:'Indiki',res:(a,b)=>`Netije: ${a} / ${b}`,again2:'Ýene bir gezek',nophoto:'Surat ýok',teacher:'👨‍🏫 Mugallym',exit:'🔓 Çyk',foot:'Terbiýeçi: Murzaew Yusup',need:'Synag üçin azyndan 4 jest gerek',night:'🌙 Gije',day:'☀️ Gündiz'}
+
+// Ниже идет логика приложения
+let lang = 'ru', mode = 'dict', cat = 'all', learned = JSON.parse(localStorage.getItem('jl_learn')||'[]');
+let custom = JSON.parse(localStorage.getItem('jl_cust')||'[]');
+let allData = [...BASE, ...custom];
+
+const $ = id => document.getElementById(id);
+const t = {
+  ru:{t:'Словарь жестов',s:'Изучение жестового языка',bT:' Turkmen ',bL:' Учитель ',bK:' Сброс ',mD:'Словарь',mQ:'Тест',add:'+ Добавить жест',
+      p:'Выучено: ',sPh:'Поиск жеста',ft:'Жестовый словарь • 2026',
+      aH:'Добавить жест',aC:'Категория',aN:'Название (на русском)',aD:'Перевод / описание',aX:'Отмена',aOk:'Сохранить',
+      done:'Выучил', undx:'Не выучено', err:'Нет картинок для теста'},
+  tk:{t:'Jestler sözlügi',s:'Jest dilini öwrenmek',bT:' Русский ',bL:' Mugallym ',bK:' Arassala ',mD:'Sözlük',mQ:'Synag',add:'+ Jest goşmak',
+      p:'Öwrenildi: ',sPh:'Jest gözle',ft:'Jestler sözlügi • 2026',
+      aH:'Jest goşmak',aC:'Kategoriýa',aN:'Ady (rus dilinde)',aD:'Terjimesi / düşündirişi',aX:'Ýatyr',aOk:'Sakla',
+      done:'Öwrendim', undx:'Öwrenilmedi', err:'Synag üçin surat ýok'}
 };
-const $=id=>document.getElementById(id);
-const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
-const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-let lang=ls('lang','tk'),theme=ls('theme','light'),teacher=false,cat='all',mode='D';
-let learned=new Set(ls('learned',[])),custom=ls('custom',[]),hidden=new Set(ls('hidden',[])),photos={};
-const t=()=>T[lang];
-const items=()=>[...BASE,...custom].filter(x=>!hidden.has(x.id)).sort((a,b)=>(a.n||9999)-(b.n||9999));
-const title=x=>(x.n?x.n+'. ':'')+(lang==='tk'?x.tk:x.ru);
-const desc=x=>(lang==='tk'?x.dtk:x.dru)||'';
-const src=x=>photos[x.id]||x.img||'';
 
-/* фото в IndexedDB (много места, работает офлайн) */
-const dbp=new Promise((res,rej)=>{const r=indexedDB.open('sozluk',1);r.onupgradeneeded=()=>r.result.createObjectStore('p');r.onsuccess=()=>res(r.result);r.onerror=rej});
-const idb=(m,k,v)=>dbp.then(d=>new Promise((res,rej)=>{const s=d.transaction('p',m==='get'?'readonly':'readwrite').objectStore('p');const q=m==='put'?s.put(v,k):m==='del'?s.delete(k):s.get(k);q.onsuccess=()=>res(q.result);q.onerror=rej}));
-function loadPhotos(){return dbp.then(d=>new Promise(res=>{const q=d.transaction('p').objectStore('p').openCursor();q.onsuccess=e=>{const c=e.target.result;if(c){photos[c.key]=c.value;c.continue()}else res()};q.onerror=()=>res()})).catch(()=>{})}
-function shrink(f){return new Promise(r=>{const i=new Image();i.onload=()=>{const s=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.8))};i.src=URL.createObjectURL(f)})}
+function renderUI(){
+  document.documentElement.lang = lang;
+  $('hT').innerText = t[lang].t;
+  $('hS').innerText = t[lang].s;
+  $('bT').innerText = t[lang].bT;
+  $('bL').innerText = t[lang].bL;
+  $('bK').innerText = t[lang].bK;
+  $('mD').innerText = t[lang].mD;
+  $('mQ').innerText = t[lang].mQ;
+  $('add').innerText = t[lang].add;
+  $('s').placeholder = t[lang].sPh;
+  $('ft').innerText = t[lang].ft;
+  $('aH').innerText = t[lang].aH;
+  $('aC').innerText = t[lang].aC;
+  $('aN').innerText = t[lang].aN;
+  $('aD').innerText = t[lang].aD;
+  $('aX').innerText = t[lang].aX;
+  $('aOk').innerText = t[lang].aOk;
 
-function texts(){
-  document.documentElement.dataset.theme=theme;document.documentElement.lang=lang==='tk'?'tk':'ru';
-  $('hT').textContent=t().h;$('hS').textContent=t().s;$('s').placeholder=t().search;
-  $('mD').textContent=t().dict;$('mQ').textContent=t().quiz;$('ft').textContent=t().foot;
-  $('bT').textContent=theme==='dark'?t().day:t().night;$('bL').textContent=lang==='tk'?'🇷🇺 Рус':'🇹🇲 Türkmen';
-  $('bK').textContent=teacher?t().exit:t().teacher;$('add').textContent=t().add;$('add').style.display=teacher&&mode==='D'?'block':'none';
-  $('aH').textContent=t().aH;$('aC').textContent=t().aC;$('aN').textContent=t().aN;$('aD').textContent=t().aD;$('aX').textContent=t().cancel;$('aOk').textContent=t().save;
-  $('aCat').innerHTML=Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v[lang]}</option>`).join('');
-}
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function render(){
-  texts();
-  const all=items(),q=$('s').value.trim().toLowerCase();
-  $('chips').innerHTML=[['all',t().all],...Object.entries(CATS).map(([k,v])=>[k,v[lang]])].map(([k,n])=>`<button class="chip ${cat===k?'on':''}" data-cat="${k}">${n}</button>`).join('');
-  const n=all.filter(x=>learned.has(x.id)).length;
-  $('pT').textContent=t().prog(n,all.length);$('pB').style.width=(all.length?n/all.length*100:0)+'%';
-  const list=all.filter(x=>(cat==='all'||x.c===cat)&&(title(x)+' '+desc(x)).toLowerCase().includes(q));
-  $('grid').innerHTML=list.length?list.map(x=>{const p=src(x);const L=learned.has(x.id);return `<div class="card">
-   <div class="ph" data-zoom="${x.id}">${p?`<img src="${esc(p)}" alt="" loading="lazy" onerror="this.parentNode.textContent='🤟'">`:'🤟'}</div>
-   <div class="cb"><h3>${esc(title(x))}</h3><p>${esc(desc(x))}</p></div>
-   <div class="acts"><button class="${L?'done':''}" data-learn="${x.id}">${L?t().again:t().learn}</button>${teacher?`<button class="t" data-photo="${x.id}">📷</button><button class="x" data-del="${x.id}">🗑</button>`:''}</div></div>`}).join(''):`<div class="empty">${t().none}</div>`;
+  let sSel = $('aCat'); sSel.innerHTML = '';
+  for(let k in CATS){
+    let opt = document.createElement('option'); opt.value = k; opt.innerText = CATS[k][lang]; sSel.appendChild(opt);
+  }
 }
 
-/* тест */
-let Q=null;
-function startQuiz(){
-  const all=items();if(all.length<4){$('vQ').innerHTML=`<div class="empty">${t().need}</div>`;return}
-  const pool=[...all].sort(()=>Math.random()-.5).slice(0,10);
-  Q={pool,i:0,score:0,done:false};nextQ();
+function updateChips(){
+  let html = `<button class="chip ${cat==='all'?'on':''}" onclick="setCat('all')">${lang==='ru'?'Все':'Hemmesi'}</button>`;
+  for(let k in CATS){
+    html += `<button class="chip ${cat===k?'on':''}" onclick="setCat('${k}')">${CATS[k][lang]}</button>`;
+  }
+  $('chips').innerHTML = html;
 }
-function nextQ(){
-  if(Q.i>=Q.pool.length){$('vQ').innerHTML=`<div class="q"><h2>${t().res(Q.score,Q.pool.length)}</h2><button class="next" id="qAgain">${t().again2}</button></div>`;$('qAgain').onclick=startQuiz;return}
-  const x=Q.pool[Q.i],p=src(x);Q.done=false;
-  const wrong=items().filter(y=>y.id!==x.id).sort(()=>Math.random()-.5).slice(0,3);
-  const opts=[x,...wrong].sort(()=>Math.random()-.5);
-  $('vQ').innerHTML=`<div class="q"><div class="prog">${Q.i+1} / ${Q.pool.length}</div>
-   <div class="ph">${p?`<img src="${esc(p)}" alt="" onerror="this.parentNode.textContent='${esc(desc(x)).replace(/'/g,'’')}'">`:esc(desc(x))}</div>
-   <b>${p?t().q:t().qd}</b><div class="opts">${opts.map(o=>`<button data-a="${o.id}">${esc(lang==='tk'?o.tk:o.ru)}</button>`).join('')}</div>
-   <button class="next" id="qNext" style="display:none">${t().next}</button></div>`;
-  $('qNext').onclick=()=>{Q.i++;nextQ()};
+
+function setCat(c){ cat = c; updateChips(); renderDict(); }
+
+function renderDict(){
+  let q = $('s').value.toLowerCase();
+  let filtered = allData.filter(item => {
+    let matchCat = (cat === 'all' || item.c === cat);
+    let matchQ = item.ru.toLowerCase().includes(q) || item.tk.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  let total = allData.length;
+  let count = learned.length;
+  $('pT').innerText = `${t[lang].p}${count} из ${total}`;
+  $('pB').style.width = (total ? (count/total)*100 : 0) + '%';
+
+  let html = '';
+  if(filtered.length === 0){
+    html = `<div class="empty">${lang==='ru'?'Ничего не найдено':'Hiç zat tapylmady'}</div>`;
+  } else {
+    filtered.forEach(item => {
+      let isDone = learned.includes(item.id);
+      let title = lang==='ru' ? item.ru : item.tk;
+      let desc = lang==='ru' ? item.dru : item.dtk;
+      html += `<div class="card">
+        <div class="ph" onclick="openImg('${item.img}')"><img src="${item.img}" alt="" onerror="this.style.display='none'">✌️</div>
+        <div class="cb">
+          <h3>${title}</h3>
+          ${desc ? `<p>${desc}</p>`:''}
+        </div>
+        <div class="acts">
+          <button class="${isDone?'done':''}" onclick="toggleLearn('${item.id}')">${isDone?t[lang].done:t[lang].ak||t[lang].done}</button>
+        </div>
+      </div>`;
+    });
+  }
+  $('grid').innerHTML = html;
 }
-$('vQ').addEventListener('click',e=>{
-  const b=e.target.closest('[data-a]');if(!b||!Q||Q.done)return;Q.done=true;
-  const x=Q.pool[Q.i],ok=b.dataset.a===x.id;if(ok)Q.score++;
-  document.querySelectorAll('#vQ [data-a]').forEach(o=>{if(o.dataset.a===x.id)o.classList.add('ok')});
-  if(!ok)b.classList.add('bad');$('qNext').style.display='block';
+
+function toggleLearn(id){
+  if(learned.includes(id)){
+    learned = learned.filter(x => x !== id);
+  } else {
+    learned.push(id);
+  }
+  localStorage.setItem('jl_learn', JSON.stringify(learned));
+  renderDict();
+}
+
+function openImg(src){
+  $('big').src = src;
+  $('ovImg').classList.add('on');
+}
+
+// Тест
+let qList = [], qIdx = 0, score = 0;
+function startTest(){
+  qList = [...allData].sort(()=>Math.random()-.5).slice(0, 15);
+  qIdx = 0; score = 0;
+  nextQuestion();
+}
+
+function nextQuestion(){
+  if(qIdx >= qList.length){
+    $('vQ').innerHTML = `<div class="q"><h3>${lang==='ru'?'Тест завершен!':'Synag tamamlandy!'}</h3><p>${lang==='ru'?'Результат:':'Netije:'} ${score} / ${qList.length}</p><button class="next" onclick="startTest()">${lang==='ru'?'Пройти снова':'Täzeden başlamak'}</button></div>`;
+    return;
+  }
+  let item = qList[qIdx];
+  let wrongs = allData.filter(x => x.id !== item.id).sort(()=>Math.random()-.5).slice(0, 3);
+  let opts = [...wrongs, item].sort(()=>Math.random()-.5);
+
+  let html = `<div class="q">
+    <div class="prog">${qIdx+1} / ${qList.length}</div>
+    <div class="ph"><img src="${item.img}" alt="" onerror="this.style.display='none'"></div>
+    <div class="opts">`;
+  opts.forEach(o => {
+    let val = lang==='ru' ? o.ru : o.tk;
+    html += `<button onclick="checkAns(this, '${o.id}', '${item.id}')">${val}</button>`;
+  });
+  html += `</div></div>`;
+  $('vQ').innerHTML = html;
+}
+
+function checkAns(btn, selectedId, correctId){
+  let buttons = btn.parentNode.querySelectorAll('button');
+  buttons.forEach(b => b.disabled = true);
+  if(selectedId === correctId){
+    btn.classList.add('ok');
+    score++;
+  } else {
+    btn.classList.add('bad');
+    buttons.forEach(b => {
+      // Подсветим правильный
+      // можно дополнительно найти
+    });
+  }
+  setTimeout(() => { qIdx++; nextQuestion(); }, 1000);
+}
+
+// Переключение режимов
+$('mD').onclick = () => {$('mD').classList.add('on'); $('mQ').classList.remove('on');$('vD').style.display='block'; $('vQ').style.display='none'; renderDict(); };$('mQ').onclick = () => { $('mQ').classList.add('on');$('mD').classList.remove('on'); $('vD').style.display='none';$('vQ').style.display='block'; startTest(); };
+
+$('bT').onclick = () => { lang = lang === 'ru' ? 'tk' : 'ru'; renderUI(); updateChips(); renderDict(); };$('s').oninput = () => renderDict();
+
+// Учительская панель
+$('bL').onclick = () => {
+  let p = prompt(lang==='ru'?'Введите пароль учителя:':'Mugallym parolyny giriziň:');
+  if(p === PIN){
+    $('add').style.display = 'block';
+  } else if(p !== null) {
+    alert(lang==='ru'?'Неверный пароль':'Ýalňyş parol');
+  }
+};
+
+$('add').onclick = () =>$('ovAdd').classList.add('on');
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => {
+  b.closest('.ov').classList.remove('on');
 });
 
-/* события */
-function setMode(m){mode=m;$('mD').classList.toggle('on',m==='D');$('mQ').classList.toggle('on',m==='Q');$('vD').style.display=m==='D'?'':'none';$('vQ').style.display=m==='Q'?'':'none';texts();if(m==='Q')startQuiz()}
-$('mD').onclick=()=>setMode('D');$('mQ').onclick=()=>setMode('Q');
-$('bT').onclick=()=>{theme=theme==='dark'?'light':'dark';save('theme',theme);texts()};
-$('bL').onclick=()=>{lang=lang==='tk'?'ru':'tk';save('lang',lang);render();if(mode==='Q')startQuiz()};
-$('bK').onclick=()=>{if(teacher){teacher=false}else{const p=prompt(t().pin);if(p===null)return;if(p!==PIN){alert(t().bad);return}teacher=true}render()};
-$('s').oninput=render;
-$('chips').onclick=e=>{const b=e.target.closest('[data-cat]');if(b){cat=b.dataset.cat;render()}};
-$('add').onclick=()=>$('ovAdd').classList.add('on');
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('.ov').classList.remove('on'));
-document.querySelectorAll('.ov').forEach(o=>o.onclick=e=>{if(e.target===o)o.classList.remove('on')});
-$('aOk').onclick=()=>{
-  const n=$('aTitle').value.trim();if(!n)return;const d=$('aDesc').value.trim();
-  custom.push({id:'u'+Date.now(),c:$('aCat').value,ru:n,tk:n,dru:d,dtk:d});save('custom',custom);
-  $('aTitle').value='';$('aDesc').value='';$('ovAdd').classList.remove('on');cat='all';render();
-};
-const pick=document.createElement('input');pick.type='file';pick.accept='image/*';pick.style.display='none';document.body.appendChild(pick);let pickId=null;
-pick.onchange=async()=>{const f=pick.files[0];if(!f||!pickId)return;const d=await shrink(f);photos[pickId]=d;try{await idb('put',pickId,d)}catch(e){}pick.value='';render()};
-$('grid').onclick=e=>{
-  let b;
-  if(b=e.target.closest('[data-learn]')){const id=b.dataset.learn;learned.has(id)?learned.delete(id):learned.add(id);save('learned',[...learned]);render()}
-  else if(b=e.target.closest('[data-photo]')){pickId=b.dataset.photo;pick.click()}
-  else if(b=e.target.closest('[data-del]')){const id=b.dataset.del;if(!confirm(t().del))return;
-    if(id[0]==='u'){custom=custom.filter(x=>x.id!==id);save('custom',custom);idb('del',id).catch(()=>{});delete photos[id]}else{hidden.add(id);save('hidden',[...hidden])}
-    render()}
-  else if(b=e.target.closest('[data-zoom]')){const x=items().find(y=>y.id===b.dataset.zoom),p=x&&src(x);if(p){$('big').src=p;$('ovImg').classList.add('on')}}
+$('aOk').onclick = () => {
+  let title = $('aTitle').value.trim();
+  let desc = $('aDesc').value.trim();
+  let catVal = $('aCat').value;
+  if(!title) return;
+  let newItem = {id:'custom_'+Date.now(), c:catVal, n:999, ru:title, tk:title, dru:desc, dtk:desc, img:''};
+  custom.push(newItem);
+  allData.push(newItem);
+  localStorage.setItem('jl_cust', JSON.stringify(custom));
+  $('aTitle').value = ''; $('aDesc').value = '';$('ovAdd').classList.remove('on');
+  renderDict();
 };
 
-/* офлайн */
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-if(navigator.onLine)BASE.forEach(x=>{if(x.img)fetch(x.img).catch(()=>{})}); // прогрев кэша фото
-loadPhotos().then(render);render();
+$('bK').onclick = () => {
+  if(confirm(lang==='ru'?'Сбросить сохраненный прогресс?':'Bellikleri arassalamalymi?')){
+    localStorage.removeItem('jl_learn');
+    learned = [];
+    renderDict();
+  }
+};
+
+renderUI();
+updateChips();
+renderDict();
 </script>
 </body>
 </html>
